@@ -60,12 +60,16 @@ clone import CNM_C as C with
 proof *.
 realize Gen_ll by exact kg_ll.
 realize Com_ll by move=> pk m; apply/dmap_ll/dr_ll.
-realize S_correct.
-by move=> pk xk m c d _ /=; rewrite supp_dmap => -[r [_ /= [-> ->]]].
-qed.
-realize ext_binding.
-by move=> pk xk m c d h /= <-; apply (correct pk xk m d h).
-qed.
+
+(* the instance is correct and perfectly binding with respect to extraction
+   (the hypotheses of CNM_C_Sanity.ec) *)
+lemma S_correct pk xk m c d :
+  (pk, xk) \in kg => (c, d) \in dmap dr (fun r => (enc pk m r, r)) => enc pk m d = c.
+proof. by move=> _; rewrite supp_dmap => -[r [_ /= [-> ->]]]. qed.
+
+lemma ext_binding pk xk m c d :
+  (pk, xk) \in kg => enc pk m d = c => dec xk c = Some m.
+proof. by move=> h <-; apply (correct pk xk m d h). qed.
 
 module BofA(A : AdvNMC) : AdvNMCPA = {
   proc init(pk : pk_t) : ptxt distr * (ptxt -> ptxt -> bool) = {

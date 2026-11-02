@@ -24,13 +24,10 @@ op ext : xkey -> commitment -> message option.
 axiom Gen_ll : is_lossless Gen.
 axiom Com_ll pk m : is_lossless (Commit pk m).
 
-(* functional *)
-axiom S_correct pk xk m c d :
-  (pk, xk) \in Gen => (c, d) \in Commit pk m => Verify pk (m, (c, d)).
-
-(* perfectly binding w.r.t. extraction: every valid opening opens to ext *)
-axiom ext_binding pk xk m c d :
-  (pk, xk) \in Gen => Verify pk (m, (c, d)) => ext xk c = Some m.
+(* Correctness and perfect binding with respect to extraction are not
+   axioms of the theory; the results that need them take them as section
+   hypotheses (CNM_C_Sanity.ec), and CNM_C_PKE.ec proves them for the
+   encryption-based instance. *)
 
 
 (* ------------------------------------------------------------------ *)

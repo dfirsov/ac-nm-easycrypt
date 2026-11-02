@@ -14,6 +14,13 @@ section Hypotheses.
 
 declare axiom m1_neq_m2 : m1 <> m2.
 
+(* the scheme is correct, and perfectly binding with respect to extraction
+   (both hold for the encryption-based instance, CNM_C_PKE.ec) *)
+declare axiom S_correct pk xk m c d :
+  (pk, xk) \in Gen => (c, d) \in Commit pk m => Verify pk (m, (c, d)).
+declare axiom ext_binding pk xk m c d :
+  (pk, xk) \in Gen => Verify pk (m, (c, d)) => ext xk c = Some m.
+
 lemma duni12_le (x : message) : mu1 (duniform [m1; m2]) x <= 1%r / 2%r.
 proof. rewrite duniform1E /=; smt(m1_neq_m2). qed.
 
