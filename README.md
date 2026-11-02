@@ -54,7 +54,8 @@ strengthened bound: `Cand_Cond.ec` with 1/12 replaced by 1/11.
 | §5, App. A simulation ⇒ AC-NM-init | `CNM_AP_HidLR.ec`, `Sim_C5_Core.ec`, `Sim_C5_Ideal.ec`, `Sim_C5_Game.ec` | `hidlr_eq`, `mix_lower`, `sum_bounds`, `choose_t`, `sim_c5_ideal`, `mix_sqrt` |
 | §6 filtering and transfer | `C5_Filter.ec`, `C5_ManaIV.ec`, `C5_SAS.ec` | `c5_filter`, `mana_c5`, `sas_c5` |
 | §6 vector AC-NM | `C5_Gen.ec`, `C5_Vector.ec` | `V.c5_filter` |
-| §8 commitment-based CNM | `CNM_C.ec`, `CNM_C_PKE.ec`, `CNM_C_Sanity.ec` | |
+| §7 Bluetooth Numeric Comparison | `Lindell_A1.ec` | `unsat_sigma`, `unsat_bot` (the non-malleability definition of Lindell, CT-RSA 2009, App. A, is unsatisfiable) |
+| §9 commitment-based CNM | `CNM_C.ec`, `CNM_C_PKE.ec`, `CNM_C_Sanity.ec` | |
 | (all) | `Instances.ec` | the scheme interface is consistent |
 
 Each file starts with a comment that states its results.
