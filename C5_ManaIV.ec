@@ -5,8 +5,8 @@
      1. Alice: ka <$ Ka, (c, d) <$ Commit pk ka, sends (ma, c);
         Charlie delivers (ma', c') to Bob.
      2. Bob: kb <$ Kb, sends (mb, kb); Charlie delivers (mb', kb') to Alice.
-     3. Alice sends d; Charlie delivers (d', ka') to Bob, who halts unless
-        Verify pk (ka', (c', d')).
+     3. Alice sends the opening (ka, d); Charlie delivers (ka', d') to Bob,
+        who halts unless Verify pk (ka', (c', d')).
      4. oob_A = h (ma, mb') ka kb'  and  oob_B = h (ma', mb) ka' kb.
    d-forge: both accept, oob_A = oob_B, and (ma, mb') <> (ma', mb).
 
@@ -52,7 +52,7 @@ module type Charlie = {
   proc init(pk : pubkey) : data * data
   proc a2b(ma : data, c : commitment) : (data * commitment) option
   proc b2a(mb : data, kb : kbt) : data * kbt
-  proc open(d : openingkey) : (openingkey * message) option
+  proc open(m : message, d : openingkey) : (openingkey * message) option
 }.
 
 module Mana(C : Charlie) = {
@@ -76,7 +76,7 @@ module Mana(C : Charlie) = {
       (ma', c')  <- oget r;
       kb         <$ dkb;
       (mb', kb') <@ C.b2a(mb, kb);
-      o          <@ C.open(d);
+      o          <@ C.open(ka, d);
       ka'        <- (oget o).`2;
       forge      <- o <> None /\ Verify pk (ka', (c', (oget o).`1))
                     /\ h (ma, mb') ka kb' = h (ma', mb) ka' kb
@@ -110,7 +110,7 @@ module Red(C : Charlie) = {
 
   proc decommit(m : message, d : openingkey) : (openingkey * message) option = {
     var o;
-    o <@ C.open(d);
+    o <@ C.open(m, d);
     return o;
   }
 }.

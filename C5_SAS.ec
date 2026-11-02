@@ -7,8 +7,9 @@
      1. Alice: r_a <$ K, (c, d) <$ Commit pk (m_a, r_a), sends (m_a, c);
         Charlie delivers (m_a', c') to Bob.
      2. Bob: r_b <$ K, sends r_b; Charlie delivers r_b' to Alice.
-     3. Alice sends d; Charlie delivers d' to Bob, who opens c' to y and
-        checks that its data part is m_a'.
+     3. Alice sends the opening ((m_a, r_a), d); Charlie delivers (y, d')
+        to Bob, who checks the opening of c' to y and that its data part
+        is m_a'.
      4. SAS: Alice shows r_a xor r_b', Bob shows sndm y xor r_b; Bob accepts
         iff they coincide.
    forge: Bob accepts a message m_a' <> m_a.
@@ -50,7 +51,7 @@ module type Charlie = {
   proc init(pk : pubkey) : data
   proc a2b(ma : data, c : commitment) : (data * commitment) option
   proc b2a(rb : key) : key
-  proc open(d : openingkey) : (openingkey * message) option
+  proc open(m : message, d : openingkey) : (openingkey * message) option
 }.
 
 module Sas(C : Charlie) = {
@@ -74,7 +75,7 @@ module Sas(C : Charlie) = {
       (ma', c')  <- oget r;
       rb         <$ dkey;
       rb'        <@ C.b2a(rb);
-      o          <@ C.open(d);
+      o          <@ C.open((pair ma ra), d);
       y          <- (oget o).`2;
       forge      <- o <> None /\ Verify pk (y, (c', (oget o).`1))
                     /\ fstm y = ma' /\ ma' <> ma
@@ -108,7 +109,7 @@ module Red(C : Charlie) = {
 
   proc decommit(m : message, d : openingkey) : (openingkey * message) option = {
     var o;
-    o <@ C.open(d);
+    o <@ C.open(m, d);
     return o;
   }
 }.
