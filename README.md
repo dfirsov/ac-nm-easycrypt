@@ -35,7 +35,9 @@ The scripts use `$EASYCRYPT` if it is set. Otherwise they use a build in
 `PATH`. `check_all.sh` writes `check_all.log` with the EasyCrypt version, the
 provers and the result of each file.
 
-Both scripts exit with a nonzero status if any check fails.
+Both scripts exit with a nonzero status if any check fails. `check_all.sh`
+also fails if any `.eco` cache file is present, since `-no-eco` stops
+EasyCrypt from writing cache files but not from reading them.
 
 The negative tests check that the setup rejects a false lemma
 (`negtests/Neg_false.ec`). They also check that it rejects a falsely

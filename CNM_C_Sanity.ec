@@ -31,6 +31,8 @@ proof. by rewrite supp_duniform. qed.
 (* ------------------------------------------------------------------ *)
 (* malleable schemes are rejected                                      *)
 
+section Mauling.
+
 op f : message -> message.
 op mc : pubkey -> commitment -> commitment.
 
@@ -81,6 +83,8 @@ qed.
 lemma AM_adv &m :
   1%r / 2%r <= Pr[ NMC(AM).main(false) @ &m : res ] - Pr[ NMC(AM).main(true) @ &m : res ].
 proof. by rewrite AM_g0; have := AM_g1 &m; smt(). qed.
+
+end section Mauling.
 
 
 (* ------------------------------------------------------------------ *)

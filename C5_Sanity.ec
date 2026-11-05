@@ -25,6 +25,8 @@ proof. by rewrite supp_duniform. qed.
 (* ------------------------------------------------------------------ *)
 (* malleable schemes are rejected                                      *)
 
+section Mauling.
+
 op f : message -> message.
 op mc : pubkey -> commitment -> commitment.
 op mo : pubkey -> openingkey -> openingkey.
@@ -88,6 +90,8 @@ lemma AM_adv &m :
              - sqrt (Pr[ G(AM).main() @ &m : G.v /\ G.rel G.n G.m' ]
                    * Pr[ G(AM).main() @ &m : G.opd /\ !G.v ]).
 proof. by rewrite AM_real AM_inv mulr0 sqrt0; have := AM_bl &m; smt(). qed.
+
+end section Mauling.
 
 
 (* ------------------------------------------------------------------ *)

@@ -48,6 +48,12 @@ negtest() {  # negtest FILE FIRSTLINE
   echo "options:    -timeout 10 -p Alt-Ergo -no-eco (each file compiled separately)"
   echo
   fail=0
+  # -no-eco stops EasyCrypt writing cache files but not reading them, so the
+  # run is only from scratch if there are none.
+  ECO=$(find . -name '*.eco' | head -5)
+  if [ -n "$ECO" ]; then
+    echo "STALE .eco CACHE FILES (remove them for a clean check):"; echo "$ECO" | sed 's/^/        /'; fail=1
+  fi
   for f in *.ec; do
     if grep -qw "admit" "$f"; then echo "ADMIT   $f"; fail=1; continue; fi
     start=$(date +%s)
