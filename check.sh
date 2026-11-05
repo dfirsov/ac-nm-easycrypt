@@ -14,8 +14,15 @@ fi
 cd "$(dirname "$0")"
 if [ -n "$2" ]; then
   "$EASYCRYPT" llm -I . -timeout 10 -p Alt-Ergo -upto "$2" "$1" 2>&1 | grep -v '^\[warning\]'
+  exit "${PIPESTATUS[0]}"
 else
   "$EASYCRYPT" llm -I . -timeout 10 -p Alt-Ergo "$1" 2>&1 | grep -v '^\[warning\]'
-  if grep -nw "admit" "$1"; then echo "ADMITS in $1"; fi
-  "$EASYCRYPT" compile -I . -timeout 10 -p Alt-Ergo -no-eco "$1" >/dev/null 2>&1 && echo "OK: $1" || echo "FAILED: $1"
+  status=0
+  if grep -nw "admit" "$1"; then echo "ADMITS in $1"; status=1; fi
+  if "$EASYCRYPT" compile -I . -timeout 10 -p Alt-Ergo -no-eco "$1" >/dev/null 2>&1; then
+    echo "OK: $1"
+  else
+    echo "FAILED: $1"; status=1
+  fi
+  exit $status
 fi

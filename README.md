@@ -35,9 +35,14 @@ The scripts use `$EASYCRYPT` if it is set. Otherwise they use a build in
 `PATH`. `check_all.sh` writes `check_all.log` with the EasyCrypt version, the
 provers and the result of each file.
 
+Both scripts exit with a nonzero status if any check fails.
+
 The negative tests check that the setup rejects a false lemma
 (`negtests/Neg_false.ec`). They also check that it rejects a falsely
-strengthened bound: `Cand_Cond.ec` with 1/12 replaced by 1/11.
+strengthened bound: `Cand_Cond.ec` with 1/12 replaced by 1/11. A negative
+test passes only if EasyCrypt reports `cannot prove goal` in the test file at
+or after the false statement; any other failure, such as a missing binary or
+a failed import, fails the test.
 
 ## Contents
 
